@@ -1,4 +1,4 @@
-# MiniProject
+# MediSynth
 
 ## Problem Statement
 
