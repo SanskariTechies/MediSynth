@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { DashboardMain } from './layers/main';
 import { DashboardSettings } from './layers/settings';
 import { Prediction } from './layers/prediction';
+import { DashboardMedScan } from './layers/medscan';
+import { NotFoundPage } from '../extras/NotFound';
 const DashboardHeader: React.FC = () => {
   var [dropdown, setDropdown] = useState(false);
   var [signout, setSignout] = useState(false);
@@ -86,27 +88,9 @@ const DashboardHeader: React.FC = () => {
                 </a>
             </li>
             <li>
-                <a href="/evidence" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                <a href="/dashboard/medscan" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                   <img src="assets/evidence.svg" className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
-                  <span className="flex-1 ms-3 whitespace-nowrap">Evidence Submission</span>
-                </a>
-            </li>
-            <li>
-                <a href="/report" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                  <img src="assets/report.svg" className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
-                  <span className="flex-1 ms-3 whitespace-nowrap">Report case</span>
-                </a>
-            </li>
-            <li>
-                <a href="/track-case" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                  <img src="assets/tracking.svg" className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
-                  <span className="flex-1 ms-3 whitespace-nowrap">Track Case</span>
-                </a>
-            </li>
-            <li>
-                <a href="/challan" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                  <img src="assets/challan.svg" className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
-                  <span className="flex-1 ms-3 whitespace-nowrap">Challan Tracking</span>
+                  <span className="flex-1 ms-3 whitespace-nowrap">Medicine Scanner</span>
                 </a>
             </li>
           </ul>
@@ -158,15 +142,20 @@ const DashboardFooter: React.FC = () => {
 const Dashboard: React.FC = () => {
   var { path } = useParams();
   var somewhere;
+  const setImage = () => {
+
+  }
   if (path === undefined || path === "/" ) {
     somewhere = <DashboardMain />;
+  } else if (path === "medscan") {
+    somewhere = <DashboardMedScan />
   } else if (path === "prediction" ) {
-    somewhere = <Prediction />
+    somewhere = <Prediction onCapture={setImage} />
   } else if (path === "settings" || path === "setting" ) {
     somewhere = <DashboardSettings />;
-  }// else if (path === "") {
-  //   somewhere;
-  // }
+  } else {
+    somewhere = <NotFoundPage />
+  }
   return (
     <>
       <DashboardHeader />

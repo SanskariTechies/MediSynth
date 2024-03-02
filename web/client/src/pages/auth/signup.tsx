@@ -6,16 +6,16 @@
 import React, { useEffect, useState } from 'react';
 
 export const Signup = () => {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
 
-    return () => clearTimeout(timer); // Clear the timer when the component unmounts
-  }, []);
-  console.log(loading);
+  //   return () => clearTimeout(timer); // Clear the timer when the component unmounts
+  // }, []);
+  // console.log(loading);
 
   return (
     <>
@@ -28,7 +28,7 @@ export const Signup = () => {
       <div className="flex flex-row flex-grow">
         <div className="hidden lg:block lg:w-1/3">
           <video className="object-cover w-full h-screen no-drag" autoPlay muted loop>
-            <source onCanPlayThrough={() => setLoading(false)} src="/assets/police.mp4" type="video/mp4" /> {/* https://cdn.dribbble.com/uploads/48226/original/b8bd4e4273cceae2889d9d259b04f732.mp4?1689028949 */}
+            <source src="assets/doctor.mp4" type="video/mp4" /> {/* https://cdn.dribbble.com/uploads/48226/original/b8bd4e4273cceae2889d9d259b04f732.mp4?1689028949 */}
             Your browser does not support the video tag.
           </video>
         </div>
