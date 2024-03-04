@@ -2,26 +2,64 @@
  * @description: Mini Project - MediSynth
 */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const VideoComponent = () => {
-  const [videoSource, setVideoSource] = useState<string>(
-    "https://www.pexels.com/download/video/4100465/"
-  );
-
+  const [videoSource, setVideoSource] = useState("");
+  const [transcript, setTranscript] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState<any>({});
+  
+  const handleSubmit = (e: any) => {
+    setIsOpen(false);
+  };
+  
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  useEffect(() => {
+    setVideoSource("https://www.pexels.com/download/video/4100465/");
+    setTranscript("Your RPG game talking text here...");
+  }, []);
   return (
     <div className="relative h-screen">
-      <video
-        className="object-cover w-full h-full"
-        autoPlay
-        loop
-        playsInline
-        src={videoSource}
-      />
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-3xl font-bold text-white">
-          Your RPG game talking text here...
-        </span>
+      <div>
+        <video
+          className="object-cover w-full h-full"
+          autoPlay loop playsInline src={videoSource}
+        />
+        {isOpen && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="p-8 bg-white rounded w-96">
+            <form>
+              <div className="mb-4">
+                  <label htmlFor="name" className="block text-gray-700">
+                    Name the disease
+                  </label>
+                  <input type="text" id="disease" name="disease" value={formData.disease} onChange={handleChange}
+                    className="block w-full mt-1 border-gray-300 rounded-md form-input" />
+              </div>
+              <button onClick={handleSubmit} className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600">
+                  Close
+              </button>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 p-8 text-black bg-gray-200">
+        <p className="mb-5 text-lg font-bold">{transcript}</p>
+        <div>
+          <p className="mb-2 text-lg">Do you know the disease?</p>
+          <div className="flex justify-between">
+            <input className="items-start p-2 ml-5 text-xl text-gray-800 rounded" type="text"/>
+            <button className="flex items-end p-4 text-right text-white bg-green-600 rounded-lg" 
+                onClick={() => setIsOpen(true)}>
+                Do you want some test result?
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -61,23 +99,13 @@ const Thermometer = () => {
           </div>
         </div>
       </div>
-      {/* Progress bar */}
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={temperature}
-        onChange={handleChange}
-        className="w-64 h-10 overflow-hidden bg-gray-200 rounded-full outline-none appearance-none"
-      />
-      <div className="mt-2 text-gray-600">Temperature: {temperature}°C</div>
     </div>
   );
 };
 
 export const Evaluate: React.FC = () => {
   return (
-    <div className="relative flex flex-row">
+    <div className="relative">
       <VideoComponent />
       {/* <Thermometer /> */}
     </div>
