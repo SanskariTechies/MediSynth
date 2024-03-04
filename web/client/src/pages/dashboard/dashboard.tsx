@@ -5,7 +5,7 @@ import { DashboardSettings } from './layers/settings';
 import { DashboardMedScan } from './layers/medscan';
 import { NotFoundPage } from '../extras/NotFound';
 import { Predes } from './layers/predes';
-import { Thermometer } from './layers/evaluate';
+import { Evaluate } from './layers/evaluate';
 import { VideoCall } from './layers/videocall';
 const DashboardHeader: React.FC = () => {
   var [dropdown, setDropdown] = useState(false);
@@ -133,15 +133,14 @@ const DashboardFooter: React.FC = () => {
 const Dashboard: React.FC = () => {
   var { path } = useParams();
   var somewhere;
-  const setImage = () => {
-
-  }
   if (path === undefined || path === "/" ) {
     somewhere = <DashboardMain />;
   } else if (path === "medscan") {
     somewhere = <DashboardMedScan />
+  } else if (path === "evaluate") {
+    somewhere = <Evaluate />
   } else if (path === "predes") {
-    somewhere = <Thermometer />//<Predes />s
+    somewhere = <Predes />
   } else if (path === "video-call") {
     somewhere = <VideoCall />
   } else if (path === "settings" || path === "setting" ) {

@@ -49,7 +49,7 @@ export const DashboardMedScan: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className='relative'>
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="p-3">
         <div className='flex items-center justify-center'>

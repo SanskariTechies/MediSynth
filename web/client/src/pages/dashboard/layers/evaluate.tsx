@@ -4,9 +4,11 @@
 
 import React, { useState } from "react";
 
-export const VideoComponent: React.FC = () => {
-  const [src, setSrc] = useState<string>("");
-  setSrc("https://www.pexels.com/download/video/5330646/")
+const VideoComponent = () => {
+  const [videoSource, setVideoSource] = useState<string>(
+    "https://www.pexels.com/download/video/4100465/"
+  );
+
   return (
     <div className="relative h-screen">
       <video
@@ -14,17 +16,18 @@ export const VideoComponent: React.FC = () => {
         autoPlay
         loop
         playsInline
-        src={src}
+        src={videoSource}
       />
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-3xl font-bold text-white">Your RPG game talking text here...</span>
+        <span className="text-3xl font-bold text-white">
+          Your RPG game talking text here...
+        </span>
       </div>
     </div>
   );
 };
 
-
-export const Thermometer: React.FC = () => {
+const Thermometer = () => {
   const [temperature, setTemperature] = useState<number>(0);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,3 +74,12 @@ export const Thermometer: React.FC = () => {
     </div>
   );
 };
+
+export const Evaluate: React.FC = () => {
+  return (
+    <div className="relative flex flex-row">
+      <VideoComponent />
+      {/* <Thermometer /> */}
+    </div>
+  );
+}
