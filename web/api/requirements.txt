@@ -35,6 +35,7 @@ uvicorn==0.27.1
 watchfiles==0.18.1
 websockets==10.4
 gtts
+typing==3.7.4.3
 # Wav2Lip-direct
 librosa
 numpy

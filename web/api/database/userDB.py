@@ -2,9 +2,8 @@
 
 import datetime
 import motor.motor_asyncio
-from web.api.workers.model import College
 
-from workers.model import SignupModel
+from workers.model import SignupSchmema, College, SigninSchmema
 
 class UserDB:
     """
@@ -18,7 +17,7 @@ class UserDB:
         self.db = self._client[database_name]
         self.col = self.db.users
 
-    async def signin(self, data: SignupModel):
+    async def Signup(self, data: SignupSchmema):
         if (self.col.find_one({"email": data.email})):
             return { 'success': False, 'message': 'You already have an account try to signin.' }
         elif (self.col.find_one({"phone": data.phone})):
@@ -33,6 +32,14 @@ class UserDB:
             except Exception as e:
                 return { 'success': False, 'message': f'Error: {e}' }
             
+    async def Signin(self, data: SigninSchmema):
+        if (not self.col.find_one({"email": data.email})):
+            return { 'success': False, 'message': 'You already have an account try to signin.' }
+        elif (self.col.find_one({"email": data.email, "password": data.password})):
+            return { 'success': True }
+        elif (not self.col.find_one({"email": data.email, "password": data.password})):
+            return { 'success': False, 'message': 'Incorrect Email or Password' }
+
     async def total_users_count(self):
         count = await self.col.count_documents({})
         return count

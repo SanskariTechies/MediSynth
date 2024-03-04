@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 
 from config import *
 import router.auth_router as auth_router
+import router.model_router as model_router
 import router.video_router as video_router
 
 app = FastAPI(
@@ -39,6 +40,7 @@ async def home():
     return JSONResponse({ "success": True })
 
 app.include_router(auth_router.router, prefix="/api/v1/auth")
+app.include_router(model_router.router, prefix="/api/v1/model")
 app.include_router(video_router.router, prefix="/api/v1/video")
 
 

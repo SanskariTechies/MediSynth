@@ -1,5 +1,7 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
+KEY = os.getenv('KEY')
 
-KEY = b'AkkilMG'
-
-MONGODB = ""
+MONGODB = os.getenv("")
