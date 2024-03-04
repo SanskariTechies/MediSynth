@@ -1,6 +1,5 @@
-/**
- * @author: @AkkilMG
- * @description: DBMS Project - Police Connect
+/** 
+ * @description: Mini Project - MediSynth
  */
 
 import React from 'react';

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardMain } from './layers/main';
 import { DashboardSettings } from './layers/settings';
-import { Prediction } from './layers/prediction';
 import { DashboardMedScan } from './layers/medscan';
 import { NotFoundPage } from '../extras/NotFound';
+import { Predes } from './layers/predes';
+import { Thermometer } from './layers/evaluate';
+import { VideoCall } from './layers/videocall';
 const DashboardHeader: React.FC = () => {
   var [dropdown, setDropdown] = useState(false);
   var [signout, setSignout] = useState(false);
@@ -28,40 +30,17 @@ const DashboardHeader: React.FC = () => {
                 </svg>
             </button>
             <a href="/" className="flex ms-2 md:me-24">
-              <img src="assets/logo.png" className="h-8 me-3" alt="Police Connect" />
+              <img src="/assets/logo.png" className="h-8 me-3" alt="MediSynth" />
             </a>
           </div>
           <div className="flex items-center">
-              <div className="flex items-center ms-3">
-                <div>
-                  <button type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user" onClick={workDropdown}>
-                    <span className="sr-only">Open user menu</span>
-                    <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
-                  </button>
-                </div>
-                <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
-                  <div className="px-4 py-3" role="none">
-                    <p className="text-sm text-gray-900 dark:text-white" role="none">
-                      Akkil M G
-                    </p>
-                    <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                      akkilcharanmg@gmail.com
-                    </p>
-                  </div>
-                  <ul className="py-1" role="none">
-                    <li>
-                      <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Dashboard</a>
-                    </li>
-                    <li>
-                      <a href="/dashboard/settings" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Settings</a>
-                    </li>
-                    <li>
-                      <a onClick={getSignout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">Sign out</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+            <div className="flex items-center ms-3">
+              <button type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user" onClick={workDropdown}>
+                <span className="sr-only">Open user menu</span>
+                <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
+              </button>
             </div>
+          </div>
         </div>
       </div>
     </nav>
@@ -89,8 +68,20 @@ const DashboardHeader: React.FC = () => {
             </li>
             <li>
                 <a href="/dashboard/medscan" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                  <img src="assets/evidence.svg" className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
+                  <img src="/assets/medscan.svg" className="flex-shrink-0 text-gray-500 transition duration-75 w-7 h-7 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
                   <span className="flex-1 ms-3 whitespace-nowrap">Medicine Scanner</span>
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard/evaluate" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                  <img src="/assets/medscan.svg" className="flex-shrink-0 text-gray-500 transition duration-75 w-7 h-7 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
+                  <span className="flex-1 ms-3 whitespace-nowrap">predes</span>
+                </a>
+            </li>
+            <li>
+                <a href="/dashboard/predes" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                  <img src="/assets/medscan.svg" className="flex-shrink-0 text-gray-500 transition duration-75 w-7 h-7 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
+                  <span className="flex-1 ms-3 whitespace-nowrap">predes</span>
                 </a>
             </li>
           </ul>
@@ -105,13 +96,13 @@ const DashboardHeader: React.FC = () => {
             </li>
             <li>
                 <a href="/privacy" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                  <img src="assets/privacy.svg" className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
+                  <img src="/assets/privacy.svg" className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
                   <span className="ms-3">Privacy Policy</span>
                 </a>
             </li>
             <li>
                 <a href="/terms" className="flex items-center p-2 text-gray-900 transition duration-75 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group">
-                  <img src="assets/terms.svg" className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
+                  <img src="/assets/terms.svg" className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
                   <span className="ms-3">Terms & Condition</span>
                 </a>
             </li>
@@ -134,7 +125,7 @@ const DashboardHeader: React.FC = () => {
 const DashboardFooter: React.FC = () => {
   return (
     <footer className="fixed bottom-0 w-full py-4 text-center text-white">
-        <p>&copy; {new Date().getFullYear()} Police Connect. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} MediSynth. All rights reserved.</p>
     </footer>
   );
 }
@@ -149,8 +140,10 @@ const Dashboard: React.FC = () => {
     somewhere = <DashboardMain />;
   } else if (path === "medscan") {
     somewhere = <DashboardMedScan />
-  } else if (path === "prediction" ) {
-    somewhere = <Prediction onCapture={setImage} />
+  } else if (path === "predes") {
+    somewhere = <Thermometer />//<Predes />s
+  } else if (path === "video-call") {
+    somewhere = <VideoCall />
   } else if (path === "settings" || path === "setting" ) {
     somewhere = <DashboardSettings />;
   } else {

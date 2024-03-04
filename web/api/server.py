@@ -8,11 +8,12 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config import *
 import router.auth_router as auth_router
+import router.video_router as video_router
 
 app = FastAPI(
     title="MediSynth",
     description="This is an application as a service to help our MediSynth application.",
-    version="0.0.2",
+    version="0.0.1",
     license_info={
         "name": "GNU GENERAL PUBLIC License v3.0",
         "url": "https://www.gnu.org/licenses/gpl-3.0.en.html",
@@ -34,6 +35,7 @@ async def home():
     return JSONResponse({ "success": True })
 
 app.include_router(auth_router.router, prefix="/api/v1/auth")
+app.include_router(video_router.router, prefix="/api/v1/video")
 
 
 if __name__ == "__main__":

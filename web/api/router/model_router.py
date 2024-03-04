@@ -11,8 +11,6 @@ router = APIRouter()
 @router.post("/")
 async def model(req: Request, res: Response, token: str = Depends(verify_token)):
     try:
-        data = req.body.json()
-        print(data)
         return JSONResponse({ "success": True })
     except Exception as e:
         return JSONResponse({ "success": False, "message": f"Error: {e}"})
