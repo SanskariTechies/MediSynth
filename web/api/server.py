@@ -5,6 +5,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from config import *
 import router.auth_router as auth_router
@@ -29,6 +30,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount the static files directory
+app.mount("/output", StaticFiles(directory="output"), name="output")
 
 app.get("/")
 async def home():

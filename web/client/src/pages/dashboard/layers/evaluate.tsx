@@ -4,19 +4,15 @@
 
 import React, { useState } from "react";
 
-
-interface VideoProps {
-  src: string;
-}
-
-export const VideoComponent: React.FC<VideoProps> = ({ src }) => {
+export const VideoComponent: React.FC = () => {
+  const [src, setSrc] = useState<string>("");
+  setSrc("https://www.pexels.com/download/video/5330646/")
   return (
     <div className="relative h-screen">
       <video
         className="object-cover w-full h-full"
         autoPlay
         loop
-        muted
         playsInline
         src={src}
       />

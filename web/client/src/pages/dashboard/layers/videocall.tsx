@@ -30,7 +30,6 @@ export const VideoCall: React.FC = () => {
                 }
             })
             .catch((err) => console.error('Error accessing media devices: ', err));
-
         return () => {
             if (stream) {
                 stream.getTracks().forEach((track) => {
@@ -57,18 +56,15 @@ export const VideoCall: React.FC = () => {
     const handleCallUser = () => {
         if (stream) {
             const peer = new Peer({ initiator: true, stream });
-
             peer.on('signal', (data) => {
                 setIsCaller(true);
                 setCallerSignal(JSON.stringify(data));
             });
-
             peer.on('stream', (stream) => {
                 if (peerVideo.current) {
                     peerVideo.current.srcObject = stream;
                 }
             });
-
             myPeer.current = peer;
         }
     };
@@ -76,19 +72,15 @@ export const VideoCall: React.FC = () => {
     const handleAnswerCall = () => {
       if (stream && callerSignal) {
         const peer = new Peer({ initiator: false, stream });
-  
         peer.on('signal', (data) => {
           myPeer.current?.signal(data);
         });
-  
         peer.on('stream', (stream) => {
           if (peerVideo.current) {
             peerVideo.current.srcObject = stream;
           }
         });
-  
         peer.signal(JSON.parse(callerSignal));
-  
         myPeer.current = peer;
       }
     };
