@@ -42,7 +42,7 @@ def generate_random_name():
 
 @router.get("/pre-evaluation")
 async def evaluation(request: Request):
-    try:
+    # try:
         random_name = generate_random_name()
         disease_name, random_symptoms = get_random_symptoms()
         symptoms_str = ", ".join(random_symptoms)
@@ -52,6 +52,6 @@ async def evaluation(request: Request):
         if result['success']:
             result['diesase'] = disease_name
         return JSONResponse(result)
-    except Exception as e:
-        return JSONResponse({ "success": False, "message": f"Error: {e}"})
+    # except Exception as e:
+    #     return JSONResponse({ "success": False, "message": f"Error: {e}"})
 
