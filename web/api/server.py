@@ -1,16 +1,14 @@
 # License: GNU General Public License v3.0
-
-
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 
 from config import *
 import router.auth_router as auth_router
 import router.model_router as model_router
 import router.video_router as video_router
+import router.evaluation_route as evaluation_route
 
 app = FastAPI(
     title="MediSynth",
@@ -36,14 +34,14 @@ app.add_middleware(
 app.mount("/output", StaticFiles(directory="output"), name="output")
 
 app.get("/")
-async def home():
+async def home():5
     return JSONResponse({ "success": True })
 
 app.include_router(auth_router.router, prefix="/api/v1/auth")
 app.include_router(model_router.router, prefix="/api/v1/model")
 app.include_router(video_router.router, prefix="/api/v1/video")
-
-
+app.include_router(router=evaluation_route.router)
+app.include_router(router=description_route.router)
 if __name__ == "__main__":
     try:
         print('------------------- Initalizing Web Server -------------------')
