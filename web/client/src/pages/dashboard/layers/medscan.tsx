@@ -2,7 +2,7 @@
  * @description: Mini Project - MediSynth
  */
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import Tesseract from 'tesseract.js';
 
@@ -13,6 +13,7 @@ export const DashboardMedScan: React.FC = () => {
   const [imageInput, setImageInput] = useState<string>("");
   const [error, setError] = useState<any>("")
   const [medicine, setMedicine] = useState<string>("");
+  const [desc, setDesc] = useState<any>("")
 
   const captureImage = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
@@ -24,6 +25,27 @@ export const DashboardMedScan: React.FC = () => {
     }
   };
 
+  const checkMedicine = async () => { 
+    if (medicine) {
+      try {
+        const response = await fetch(`http://localhost:8000/api/v1/description/predict_description`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({'medicine': medicine})
+        });
+        const responseData: any = await response.json();
+        if (response.ok && responseData.success) {
+          setDesc(responseData.medicine);
+        } else {
+          setError(responseData.message);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  }
   const performOCR = async () => {
     try {
       const { data: { text } } = await Tesseract.recognize(imageInput, 'eng');
@@ -34,7 +56,7 @@ export const DashboardMedScan: React.FC = () => {
       } 
       
       try {
-        const response = await fetch(`http://localhost:8000/api/v1/model/`, {
+        const response = await fetch(`http://localhost:8000/api/v1/description/predict_description`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -43,7 +65,7 @@ export const DashboardMedScan: React.FC = () => {
         });
         const responseData: any = await response.json();
         if (response.ok && responseData.success) {
-          setMedicine(responseData.medicine);
+          setDesc(responseData.medicine);
         } else {
           setError(responseData.message);
         }
@@ -83,12 +105,13 @@ export const DashboardMedScan: React.FC = () => {
       fileInputRef.current.click();
     }
   };
+
   return (
       <div className='relative'>
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
-          {medicine? (
+          {desc? (
             <>
-              <h1 className="mb-4 text-2xl font-semibold text-center">{medicine}</h1>
+              <h1 className="mb-4 text-2xl font-semibold text-center">{desc}</h1>
             </>
           ) : (
             <div className="p-3">
@@ -149,6 +172,23 @@ export const DashboardMedScan: React.FC = () => {
                   <span>No image input</span>
                 </div>
               ))}
+              <div className='flex justify-center flex-col items-center mt-5'>
+              <h1>or</h1>
+              {(medicine && desc) ? (
+                  <p className='text-black text-semibold'>{desc}</p>
+                ): (
+                  <div className='flex justify-center flex-col items-center'>
+                    <input onChange={(e) => {setMedicine(e.target.value)}} className='p-4 text-black' placeholder='Enter the medicine name'/>
+                    <button
+                      className="px-4 py-2 font-semibold text-white bg-indigo-500 rounded-md hover:bg-indigo-600"
+                      onClick={checkMedicine}>
+                      Check Medicine
+                    </button>
+                  </div>
+                  
+                )
+              }
+              </div>
               {error && (
                 <div className='flex items-center justify-center text-red-700'>
                   <span>${error}</span>

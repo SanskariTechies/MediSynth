@@ -4,8 +4,8 @@ import { DashboardMain } from './layers/main';
 import { DashboardSettings } from './layers/settings';
 import { DashboardMedScan } from './layers/medscan';
 import { NotFoundPage } from '../extras/NotFound';
-import { Evaluate } from './layers/evaluate';
 import { VideoCall } from './layers/videocall';
+import { Evaluate } from './layers/evaluate';
 
 const DashboardHeader: React.FC<any> = ({ component }) => {
   var [dropdown, setDropdown] = useState(false);
@@ -113,8 +113,6 @@ const DashboardHeader: React.FC<any> = ({ component }) => {
       </aside>
       {component}
     </div>
-    
-      
   </>
   );
 };
