@@ -4,3 +4,8 @@ resolve: {
     }
 }
   
+module.exports = {
+  plugins: [
+      new NodePolyfillPlugin()
+  ]
+}
