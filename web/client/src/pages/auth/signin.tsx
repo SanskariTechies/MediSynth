@@ -4,18 +4,46 @@
 
 import React, { useEffect, useState } from 'react';
 
+require('dotenv').config();
 export const Signin = () => {
-  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    "email": "",
+    "password": ""
+  });
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+  const handleChange = (event: any) => {
+    setFormData({
+      ...formData,
+      [event.target.id]: event.target.value
+    });
+  }
 
-    return () => clearTimeout(timer); // Clear the timer when the component unmounts
-  }, []);
-  console.log(loading);
-
+  const submit = async () => {
+    for (const [key, value] of Object.entries(formData)) {
+      if (value === "") {
+        setError(`${key} is required`)
+        return;
+      }
+    }
+    try {
+      const response = await fetch(`${process.env.API}/auth/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const responseData: any = await response.json();
+      if (response.ok && responseData.success) {
+        window.location.href = "/dashboard";
+      } else {
+        setError(responseData.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
   return (
     <>
   <main className="flex flex-col">
@@ -37,14 +65,16 @@ export const Signin = () => {
           <form>
             <div className="mb-4">
               <label className="block mb-2 font-bold text-gray-700 text-sl"> Email </label>
-              <input className="w-full px-3 py-2 leading-tight text-gray-700 border rounded-lg shadow appearance-none h-14 focus:border-indigo-500 focus:shadow-lg focus:outline-none focus:ring-2" id="email" type="email" />
+              <input value={formData.email} onChange={handleChange} id="email" type="email" 
+              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded-lg shadow appearance-none h-14 focus:border-indigo-500 focus:shadow-lg focus:outline-none focus:ring-2" />
             </div>
             <div className="mb-6">
               <span className="flex items-center justify-between mb-2 font-sans font-bold text-gray-700 text-sl">
                 Password
                 <a href="/forgot" className="font-sans text-sm font-normal text-gray-600 underline cursor-pointer">Forgot?</a>
               </span>
-              <input className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded-lg shadow appearance-none focus:border-indifo-500 h-14 focus:outline-none focus:ring" id="password" type="password" />
+              <input value={formData.password} onChange={handleChange} id="password" type="password" 
+               className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded-lg shadow appearance-none focus:border-indifo-500 h-14 focus:outline-none focus:ring" />
             </div>
             <div>
               <button type="submit" className="focus:shadow-outline h-14 w-full rounded-3xl bg-[#0D0C22] px-4 py-2 font-sans font-bold text-white hover:bg-gray-800 focus:outline-none">Sign In</button>

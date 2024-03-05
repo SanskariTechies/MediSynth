@@ -25,8 +25,6 @@ def get_random_symptoms():
                 cholesterol_level = str(value).capitalize()
             elif str(value).lower() != "no":  
                 symptoms.append(key)
-
- 
     if blood_pressure:
         symptoms.append(f"Blood Pressure is {blood_pressure}")
     if cholesterol_level:
@@ -37,11 +35,6 @@ def get_random_symptoms():
 def generate_random_name():
     random_names = ["Akkil", "Saiesh", "Ashish", "Rakshita", "Emma"]
     return random.choice(random_names)
-
-
-
-
-
 
 @router.post("/video")
 async def video(request: Request):
@@ -56,12 +49,8 @@ async def evaluation(request: Request):
     try:
         random_name = generate_random_name()
         random_symptoms = get_random_symptoms()
-
         symptoms_str = ", ".join(random_symptoms)
         output_string = f"Hello, my name is {random_name} and my symptoms are {symptoms_str}."
-        
-    
-        
         result = CharGen(output_string)
         return JSONResponse(result)
     except Exception as e:
