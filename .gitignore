@@ -4,5 +4,6 @@ __pycache__
 .venv
 node_modules
 test
-evaluation_prediction_model2.joblib
-wav2lip_gan.pth
+evaluation_prediction_model2
+wav2lip_gan
+s3fd
