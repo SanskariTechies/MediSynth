@@ -4,15 +4,35 @@
 
 import React, { useState, useEffect } from "react";
 
+
+
 const VideoComponent = () => {
-  const [videoSource, setVideoSource] = useState("");
-  const [transcript, setTranscript] = useState("");
+  const [videoSource, setVideoSource] = useState<any>("");
+  const [transcript, setTranscript] = useState<any>("");
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState<any>({});
-  
+  const [disease, setdisease] = useState<any>({});
+
   const handleSubmit = (e: any) => {
     
   };
+
+  const loaddata= async ()=>{
+    let response=await fetch("http://localhost:8000/api/v1/video/pre-evaluation",{
+      method:"GET",
+      headers:{
+        'Content-Type':'application/json'
+      }
+    });
+  
+    const responseData: any =await response.json();
+    if(!responseData.success){
+      console.error('Error');
+    }
+    setVideoSource(responseData.path);
+    setTranscript(responseData.transcription);
+    setdisease(responseData.disease)
+  }
   
   const handleChange = (e: any) => {
     const { name, value } = e.target;
