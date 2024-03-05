@@ -8,9 +8,9 @@ import { Header } from './components/common/header';
 import { Footer } from './components/common/footer';
 import { ForgotForm } from './pages/auth/ForgotForm';
 import Dashboard from './pages/dashboard/dashboard';
-import { Privacy } from './pages/policy/privacy';
-import { Terms } from './pages/policy/terms';
-
+import {About} from './pages/about/about'
+import { Feedback } from './pages/feedback/feedback';
+import { Help } from './pages/help/help';
 
 const Routing= () => {
   var { path } = useParams();
@@ -26,7 +26,16 @@ const Routing= () => {
   let component;
   if (path === undefined || path === "/") {
     component = <Home />
-  } else {
+  } else if ( path === "/about") {
+    component = <About />;
+  }
+  else if ( path === "/feedback") {
+    component = <Feedback />;
+  }
+  else if ( path === "/help") {
+    component = <Help />;
+  }
+  else {
     component = <NotFoundPage />;
   }
   return (
@@ -49,13 +58,15 @@ export const App = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/forgot" element={<ForgotForm />} />
       {/* Policy */}
-      <Route path="/privacy" element={<Privacy />} />
-      <Route path="/terms" element={<Terms />} />
       {/* Dashboard */}
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/dashboard/:path" element={<Dashboard />} />
       {/* Other routing */}
       <Route path="/" element={<Dashboard />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/feedback" element={<Feedback />} />
+      <Route path="/help" element={<Help />} />
+
       <Route path="/:path" element={<Routing />} />
     </Routes>
   );
