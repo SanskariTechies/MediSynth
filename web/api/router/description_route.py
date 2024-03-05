@@ -4,7 +4,7 @@ import joblib
 import pandas as pd
 
 
-app = FastAPI()
+router=APIRouter()
 
 # Load the dataset
 data = pd.read_csv('Data/med.csv',encoding='cp1252')
@@ -17,7 +17,7 @@ classifier = joblib.load('models/evaluation_prediction_model2.joblib')
 class MedicineInput(BaseModel):
     medicine: str
 
-@app.post("/predict_description")
+@router.post("/predict_description")
 async def predict_medicine(medicine_input: MedicineInput):
     # Encode the input disease
     disease_encoded = pd.get_dummies(pd.Series(medicine_input.medicine)).reindex(columns=X.columns, fill_value=0)

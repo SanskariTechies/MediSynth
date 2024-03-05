@@ -13,17 +13,13 @@ class SignupModel(BaseModel):
     email: str
     usn: Optional[str]
     college: Optional[int]
+    password: str
     confirmPassword: str
     year: Optional[int]
     sem: Optional[int]
     password: str
     phone: str
-
-
-
-class SigninSchmema(BaseModel):
-    email: str
-    password: str
+    waphone: str
 
 class SignupSchmema(BaseModel):
     name: str
@@ -34,6 +30,7 @@ class SignupSchmema(BaseModel):
     sem: Optional[int]
     password: str
     phone: str
+    waphone: str
 
 
 College = [

@@ -3,7 +3,7 @@
 import requests
 from fastapi import APIRouter, Request, UploadFile, File
 from fastapi.responses import JSONResponse
-from database.userDB import Signup, Signin
+from database.userDB import userDatabase
 from workers.model import SigninModel, SignupModel
 
 router = APIRouter()
@@ -11,7 +11,7 @@ router = APIRouter()
 @router.post("/signin")
 async def signin(request: Request, data: SigninModel):
     try:
-        result = await Signin(data)
+        result = await userDatabase.signin(data)
         return JSONResponse(result)
     except Exception as e:
         return JSONResponse({ "success": False, "message": f"Error: {e}"})
@@ -20,7 +20,7 @@ async def signin(request: Request, data: SigninModel):
 @router.post("/signup")
 async def signup(request: Request, data: SignupModel):
     try:
-        result = await Signup(data)
+        result = await userDatabase.signup(data)
         return JSONResponse(result)
     except Exception as e:
         return JSONResponse({ "success": False, "message": f"Error: {e}"})

@@ -11,7 +11,7 @@ const VideoComponent = () => {
   const [formData, setFormData] = useState<any>({});
   
   const handleSubmit = (e: any) => {
-    setIsOpen(false);
+    
   };
   
   const handleChange = (e: any) => {
@@ -20,7 +20,7 @@ const VideoComponent = () => {
   };
   useEffect(() => {
     setVideoSource("https://www.pexels.com/download/video/4100465/");
-    setTranscript("Your RPG game talking text here...");
+    setTranscript("text goes here...");
   }, []);
   return (
     <div className="relative h-screen">
@@ -32,16 +32,26 @@ const VideoComponent = () => {
         {isOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="p-8 bg-white rounded w-96">
+              <div className="flex justify-end">
+              <button onClick={(e) => {setIsOpen(false)}} className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600">
+                  Close
+              </button>
+              </div>
             <form>
+              {/* <div className="mb-4">
+                  <label htmlFor="name" className="block text-gray-700">
+                    Name the medicine
+                  </label>
+              </div> */}
               <div className="mb-4">
                   <label htmlFor="name" className="block text-gray-700">
-                    Name the disease
+                    Name the medicine
                   </label>
                   <input type="text" id="disease" name="disease" value={formData.disease} onChange={handleChange}
-                    className="block w-full mt-1 border-gray-300 rounded-md form-input" />
+                    className="block w-full p-4 mt-1 border-gray-800 rounded-md form-input" />
               </div>
               <button onClick={handleSubmit} className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600">
-                  Close
+                  Submit
               </button>
               </form>
             </div>
@@ -56,7 +66,7 @@ const VideoComponent = () => {
             <input className="items-start p-2 ml-5 text-xl text-gray-800 rounded" type="text"/>
             <button className="flex items-end p-4 text-right text-white bg-green-600 rounded-lg" 
                 onClick={() => setIsOpen(true)}>
-                Do you want some test result?
+                Next
             </button>
           </div>
         </div>

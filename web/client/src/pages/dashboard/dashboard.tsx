@@ -4,7 +4,6 @@ import { DashboardMain } from './layers/main';
 import { DashboardSettings } from './layers/settings';
 import { DashboardMedScan } from './layers/medscan';
 import { NotFoundPage } from '../extras/NotFound';
-import { Predes } from './layers/predes';
 import { Evaluate } from './layers/evaluate';
 import { VideoCall } from './layers/videocall';
 
@@ -79,16 +78,16 @@ const DashboardHeader: React.FC<any> = ({ component }) => {
                 </li>
                 <li>
                     <a href="/dashboard/evaluate" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                      <img src="/assets/medscan.svg" className="flex-shrink-0 text-gray-500 transition duration-75 w-7 h-7 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
-                      <span className="flex-1 ms-3 whitespace-nowrap">predes</span>
+                      <img src="/assets/evaluate.svg" className="flex-shrink-0 text-gray-500 transition duration-75 w-7 h-7 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
+                      <span className="flex-1 ms-3 whitespace-nowrap">Evaluate</span>
                     </a>
                 </li>
-                <li>
-                    <a href="/dashboard/predes" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                      <img src="/assets/medscan.svg" className="flex-shrink-0 text-gray-500 transition duration-75 w-7 h-7 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
-                      <span className="flex-1 ms-3 whitespace-nowrap">predes</span>
+                {/* <li>
+                    <a href="/dashboard/video-call" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                      <img src="/assets/video-call.svg" className="flex-shrink-0 text-gray-500 transition duration-75 w-7 h-7 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
+                      <span className="flex-1 ms-3 whitespace-nowrap">Video Call</span>
                     </a>
-                </li>
+                </li> */}
               </ul>
               <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
                 <li>
@@ -148,8 +147,6 @@ const Dashboard: React.FC = () => {
     somewhere = <DashboardMedScan />
   } else if (path === "evaluate") {
     somewhere = <Evaluate />
-  } else if (path === "predes") {
-    somewhere = <Predes />
   } else if (path === "video-call") {
     somewhere = <VideoCall />
   } else if (path === "settings" || path === "setting" ) {

@@ -3,4 +3,3 @@ resolve: {
       events: require.resolve('events/')
     }
 }
-  

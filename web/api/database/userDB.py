@@ -3,8 +3,8 @@
 import datetime
 import motor.motor_asyncio
 
-from workers.model import SignupSchmema, College, SigninSchmema
-
+from workers.model import SignupSchmema, College,  SignupModel, SigninModel
+from config import MONGODB
 class UserDB:
     """
     @description: This will handle the user collection in the database asyncronously.
@@ -17,22 +17,21 @@ class UserDB:
         self.db = self._client[database_name]
         self.col = self.db.users
 
-    async def Signup(self, data: SignupSchmema):
+    async def signup(self, data: SignupModel):
         if (self.col.find_one({"email": data.email})):
             return { 'success': False, 'message': 'You already have an account try to signin.' }
-        elif (self.col.find_one({"phone": data.phone})):
-            return { 'success': False, 'message': 'Your number is already in use' }
         elif (data.password != data.confirmPassword):
             return { 'success': False, 'message': 'Your both password and confirm password are different.' }
         else:
             try:
-                if (College[data.college]):
-                    await self.col.insert_one(data)
+                    filter: SignupSchmema = data
+                # if (College[data.college]):
+                    await self.col.insert_one(filter)
                     return { 'success': True }
             except Exception as e:
                 return { 'success': False, 'message': f'Error: {e}' }
             
-    async def Signin(self, data: SigninSchmema):
+    async def signin(self, data: SigninModel):
         if (not self.col.find_one({"email": data.email})):
             return { 'success': False, 'message': 'You already have an account try to signin.' }
         elif (self.col.find_one({"email": data.email, "password": data.password})):
@@ -46,7 +45,8 @@ class UserDB:
 
     async def delete_user(self, email):
         await self.col.delete_many({'email': email})
-        
+    
+    
     """
     async def set_<name representing the value>(self, id, <value>):
         await self.col.update_one({'id': id}, {'$set': {'<field name>': <value>}})
@@ -56,3 +56,4 @@ class UserDB:
         return user.get('<field name>', <defaults>)
     """
 
+userDatabase = UserDB(MONGODB, "users")
