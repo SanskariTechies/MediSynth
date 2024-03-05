@@ -4,7 +4,6 @@
 
 import React, { useEffect, useState } from 'react';
 
-require('dotenv').config();
 
 export const Signup = () => {
   const [error, setError] = useState("");
@@ -35,7 +34,7 @@ export const Signup = () => {
       setError("Passwords don't match")
     }
     try {
-      const response = await fetch(`${process.env.API}/auth/signup`, {
+      const response = await fetch(`http://localhost:8000/api/v1/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

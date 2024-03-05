@@ -4,7 +4,6 @@
 
 import React, { useEffect, useState } from 'react';
 
-require('dotenv').config();
 export const Signin = () => {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -27,7 +26,7 @@ export const Signin = () => {
       }
     }
     try {
-      const response = await fetch(`${process.env.API}/auth/signin`, {
+      const response = await fetch(`http://localhost:8000/api/v1/auth/signin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

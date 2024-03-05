@@ -56,11 +56,11 @@ export const VideoCall: React.FC = () => {
     const handleCallUser = () => {
         if (stream) {
             const peer = new Peer({ initiator: true, stream });
-            peer.on('signal', (data) => {
+            peer.on('signal', (data: any) => {
                 setIsCaller(true);
                 setCallerSignal(JSON.stringify(data));
             });
-            peer.on('stream', (stream) => {
+            peer.on('stream', (stream: any) => {
                 if (peerVideo.current) {
                     peerVideo.current.srcObject = stream;
                 }
@@ -72,10 +72,10 @@ export const VideoCall: React.FC = () => {
     const handleAnswerCall = () => {
       if (stream && callerSignal) {
         const peer = new Peer({ initiator: false, stream });
-        peer.on('signal', (data) => {
+        peer.on('signal', (data: any) => {
           myPeer.current?.signal(data);
         });
-        peer.on('stream', (stream) => {
+        peer.on('stream', (stream: any) => {
           if (peerVideo.current) {
             peerVideo.current.srcObject = stream;
           }

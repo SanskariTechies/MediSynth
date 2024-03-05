@@ -82,12 +82,12 @@ const DashboardHeader: React.FC<any> = ({ component }) => {
                       <span className="flex-1 ms-3 whitespace-nowrap">Evaluate</span>
                     </a>
                 </li>
-                <li>
+                {/* <li>
                     <a href="/dashboard/video-call" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                       <img src="/assets/video-call.svg" className="flex-shrink-0 text-gray-500 transition duration-75 w-7 h-7 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" height={10} width={10} />
                       <span className="flex-1 ms-3 whitespace-nowrap">Video Call</span>
                     </a>
-                </li>
+                </li> */}
               </ul>
               <ul className="pt-4 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
                 <li>

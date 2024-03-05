@@ -3,9 +3,3 @@ resolve: {
       events: require.resolve('events/')
     }
 }
-  
-module.exports = {
-  plugins: [
-      new NodePolyfillPlugin()
-  ]
-}

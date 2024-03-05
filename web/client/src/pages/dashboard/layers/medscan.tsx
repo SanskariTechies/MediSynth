@@ -6,8 +6,6 @@ import React, { useState, useRef, useCallback } from 'react';
 import Webcam from 'react-webcam';
 import Tesseract from 'tesseract.js';
 
-require('dotenv').config();
-
 export const DashboardMedScan: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -36,7 +34,7 @@ export const DashboardMedScan: React.FC = () => {
       } 
       
       try {
-        const response = await fetch(`${process.env.API}/model/`, {
+        const response = await fetch(`http://localhost:8000/api/v1/model/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
