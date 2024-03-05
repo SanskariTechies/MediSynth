@@ -18,7 +18,7 @@ class MedicineInput(BaseModel):
     disease: str
 
 router=APIRouter()
-@router.post("/predict_description/")
+@router.route("/predict_description/",methods=["POST","GET"])
 async def predict_medicine(medicine_input: MedicineInput):
     # Encode the input disease
     disease_encoded = pd.get_dummies(pd.Series(medicine_input.medicine)).reindex(columns=X.columns, fill_value=0)
