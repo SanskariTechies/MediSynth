@@ -48,7 +48,7 @@ async def evaluation(request: Request):
         symptoms_str = ", ".join(random_symptoms)
         output_string = f"Hello, my name is {random_name} and my symptoms are {symptoms_str}."
         print(output_string)
-        result = CharGen(output_string)
+        result = await CharGen(output_string)
         if result['success']:
             result['diesase'] = disease_name
         return JSONResponse(result)

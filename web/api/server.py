@@ -32,7 +32,7 @@ app.add_middleware(
 )
 
 # Mount the static files directory
-app.mount("/output", StaticFiles(directory="output"), name="output")
+app.mount("/output", StaticFiles(directory="Wav2Lip/output"), name="output")
 
 @app.get("/")
 async def home():
