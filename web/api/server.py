@@ -10,6 +10,7 @@ import router.auth_router as auth_router
 import router.model_router as model_router
 import router.video_router as video_router
 import router.evaluation_route as evaluation_route
+
 app = FastAPI(
     title="MediSynth",
     description="This is an application as a service to help our MediSynth application.",
@@ -31,7 +32,7 @@ app.add_middleware(
 )
 
 # Mount the static files directory
-@app.mount("/output", StaticFiles(directory="output"), name="output")
+app.mount("/output", StaticFiles(directory="output"), name="output")
 
 @app.get("/")
 async def home():
@@ -40,7 +41,7 @@ async def home():
 app.include_router(auth_router.router, prefix="/api/v1/auth")
 app.include_router(model_router.router, prefix="/api/v1/model")
 app.include_router(video_router.router, prefix="/api/v1/video")
-app.include_router(evaluation_route.router, prefix="/api/v1/evaluate")
+app.include_router(evaluation_route.router, prefix="/api/v1/evaluation")
 app.include_router(description_route.router, prefix="/api/v1/description")
 
 if __name__ == "__main__":

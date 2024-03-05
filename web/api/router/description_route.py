@@ -18,7 +18,7 @@ class MedicineInput(BaseModel):
     medicine: str
 
 @router.post("/predict_description")
-async def predict_medicine(medicine_input: MedicineInput):
+async def predict_decription(medicine_input: MedicineInput):
     # Encode the input disease
     disease_encoded = pd.get_dummies(pd.Series(medicine_input.medicine)).reindex(columns=X.columns, fill_value=0)
     medicine = classifier.predict(disease_encoded)[0]
