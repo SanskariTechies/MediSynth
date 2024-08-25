@@ -1,163 +1,194 @@
-/**
- * @description: Mini Project - MediSynth
-*/
+import React, { useState, useEffect } from 'react';
+import './style.css';
 
-import React, { useState, useEffect } from "react";
+const Evaluate = () => {
+  const [symptoms, setSymptoms] = useState('');
+  const [fetchedDiseaseName, setFetchedDiseaseName] = useState('');
+  const [enteredDiseaseName, setEnteredDiseaseName] = useState('');
+  const [prescribedMedicine, setPrescribedMedicine] = useState('');
+  const [evaluationResult, setEvaluationResult] = useState('');
+  const [message, setMessage] = useState('');
+  const [messageIndex, setMessageIndex] = useState(0);
+  const [startButtonClicked, setStartButtonClicked] = useState(false);
+  const [messageCompleted, setMessageCompleted] = useState(false);
 
-const VideoComponent = () => {
-  const [videoSource, setVideoSource] = useState<any>("");
-  const [transcript, setTranscript] = useState<any>("");
-  const [isOpen, setIsOpen] = useState(false);
-  // const [formData, setFormData] = useState<any>({});
-  const [medicine, setMedicine] = useState<any>("")
-  const [disease, setdisease] = useState<any>("");
-  const [userDisease, setUserDisease] = useState<any>("");
+  useEffect(() => {
+    console.log("Fetching data...");
+    fetchPreEvaluationData();
+  }, []);
 
-  const [right, setRight] = useState<boolean>(false)
+  useEffect(() => {
+    if (startButtonClicked && message?.length > 0) {
+      const interval = setInterval(() => {
+        setMessageIndex(prevIndex => {
+          if (prevIndex >= message.length) {
+            clearInterval(interval);
+            setMessageCompleted(true); // Set to true when message is complete
+            return prevIndex;
+          }
+          return prevIndex + 1;
+        });
+      }, 100);
 
-  const [error, setError] = useState<any>("")
-  const handleSubmit = async (e: any) => {
-    if(!(userDisease==disease)) {
-      setError("You have analysed it wrongly.")
-    } else {
-      const response = await fetch(`http://localhost:8000/api/v1/evaluation/evaluate`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "disease": disease,
-          "medicine": medicine
-        }),
-      });
-      const responseData: any = await response.json();
-      if(!responseData.success){
-        setError(responseData.message)
-      } else {
-        setRight(true);
-      }
+      return () => clearInterval(interval);
+    }
+  }, [startButtonClicked, message]);
+
+  const fetchPreEvaluationData = () => {
+    fetch("http://localhost:8000/api/v1/video/pre-evaluation")
+      .then(response => response.json())
+      .then(data => {
+        setMessage(data[1]);
+        setFetchedDiseaseName(data[0]);
+        console.log(data[0]);
+        console.log(data[1]);
+      })
+      .catch(error => console.error("Error fetching pre-evaluation data:", error));
+  };
+
+  const speakMessage = (text:string) => {
+    if ('speechSynthesis' in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(utterance);
     }
   };
 
-  const loaddata = async () => {
-    let response=await fetch("http://localhost:8000/api/v1/video/pre-evaluation",{
-      method:"GET",
-      headers:{
-        'Content-Type':'application/json'
-      }
-    });
-    const responseData: any =await response.json();
-    if(!responseData.success){
-      setError(responseData.message)
+  const checkDiseaseName = () => {
+    if (enteredDiseaseName === fetchedDiseaseName) {
+      setEvaluationResult("Correct");
     } else {
-      setVideoSource(responseData.path);
-      setTranscript(responseData.transcription);
-      setdisease(responseData.disease);
+      setEvaluationResult("Incorrect");
     }
-  }
-  useEffect(() => {
-    setVideoSource("http://localhost:8000/output/result.mp4");
-    setTranscript("text goes here...");
-  }, []);
+  };
+
+  const evaluateMedicine = () => {
+    fetch("http://localhost:8000/api/v1/evaluation/evaluate", {
+      method: "POST",
+      body: JSON.stringify({ disease: fetchedDiseaseName, medicine: prescribedMedicine }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setEvaluationResult(data.result ? "True" : "False");
+      })
+      .catch(error => console.error("Error evaluating medicine:", error));
+  };
+
+  const handleStartButtonClick = () => {
+    setStartButtonClicked(true);
+    setTimeout(() => {
+      speakMessage(message);
+    }, 100); 
+  };
 
   return (
-    <div className="relative h-screen">
-      {right? (
-        <div className="flex items-center">
-          <h1 className="text-green-700 text-xl">You have passed.</h1>
-        </div>
-      ) : (<>
-        <div>
-          <video
-            className="object-cover w-full h-full"
-            autoPlay loop playsInline src={videoSource}
-          />
-          {isOpen && (
-            <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-              <div className="p-8 bg-white rounded w-96">
-                <div className="flex justify-end">
-                <button onClick={(e) => {setIsOpen(false)}} className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600">
-                    Close
-                </button>
-                </div>
-              <form>
-                <div className="mb-4">
-                    <label htmlFor="name" className="block text-gray-700">
-                      Name the medicine
-                    </label>
-                    <input type="text" id="disease" name="disease" onChange={(e) => {setMedicine(e.target.value)}}
-                      className="block w-full p-4 mt-1 border-gray-800 rounded-md form-input" />
-                </div>
-                <button onClick={handleSubmit} className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-600">
-                    Submit
-                </button>
-                </form>
-              </div>
+    <div>
+      <div className="box" style={{ width: "900px", height: "500px" }}>
+        <div className="cartoon">
+          <div className="shoulders"></div>
+          <div className="hair-back"></div>
+          <div className="neck"></div>
+          <div className="ear"></div>
+          <div className="ear"></div>
+          <div className="face">
+            <div className="nose"></div>
+            <div className="mouth">
+              {startButtonClicked && !messageCompleted ? (
+                <div className="semicircle"></div>
+              ) : (
+                <div className="line"></div>
+              )}
             </div>
-          )}
+            <div className="eye">
+              <div className="pupil"></div>
+              <div className="eye-bright"></div>
+            </div>
+            <div className="eye">
+              <div className="pupil"></div>
+              <div className="eye-bright"></div>
+            </div>
+            <div className="eyebrow"></div>
+            <div className="eyebrow"></div>
+          </div>
+          <div className="forehead"></div>
+          <div className="hair-front-1"></div>
+          <div className="hair-front-1"></div>
+          <div className="hair-front-2"></div>
+          <div className="hair-front-2"></div>
+          <div className="hair-front-3"></div>
+          <div className="hair-front-3"></div>
+          <div className="hair-bangs"></div>
+          <div className="shirt-neck"></div>
+          <div className="shirt-neck"></div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 p-8 text-black bg-gray-200">
-          <p className="mb-5 text-lg font-bold">{transcript}</p>
-          <div>
-            <p className="mb-2 text-lg">Do you know the disease?</p>
-            {error && (<span className="text-red text-lg">{error}</span>)}
-            <div className="flex justify-between">
-              <input className="items-start p-2 ml-5 text-xl text-gray-800 rounded" name="userDisease" onChange={(e) => {setUserDisease(e.target.value)}} type="text"/>
-              <button className="flex items-end p-4 text-right text-white bg-green-600 rounded-lg" 
-                  onClick={() => setIsOpen(true)}>
-                  Next
+      </div>
+      {!startButtonClicked && (
+        <>
+      <button
+        onClick={handleStartButtonClick}
+        style={{ padding: '10px', backgroundColor: 'black', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', width: '300px', marginLeft: "430px", marginBottom: "50px" }}
+      >
+        Start
+      </button>
+      </>
+      )}
+
+      {startButtonClicked && (
+        <>
+          <p style={{ fontFamily: 'Arial', fontSize: '16px', lineHeight: '1.5', backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '5px' }}>
+            Message:
+            <span style={{ fontWeight: 'bold', color: 'black' }}>
+            {message?.substring(0, messageIndex)}
+            </span>
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '45%' }}>
+              <input
+                type="text"
+                placeholder="Enter disease name"
+                value={enteredDiseaseName}
+                onChange={e => setEnteredDiseaseName(e.target.value)}
+                style={{ padding: '10px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc', width: '100%' }}
+              />
+              <button
+                onClick={checkDiseaseName}
+                style={{ padding: '10px', backgroundColor: 'black', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', width: '100%' }}
+              >
+                Check Disease Name
+              </button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '45%' }}>
+              <input
+                type="text"
+                placeholder="Enter prescribed medicine"
+                value={prescribedMedicine}
+                onChange={e => setPrescribedMedicine(e.target.value)}
+                style={{ padding: '10px', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc', width: '100%' }}
+              />
+              <button
+                onClick={evaluateMedicine}
+                style={{ padding: '10px', backgroundColor: 'black', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', width: '100%' }}
+              >
+                Evaluate Medicine
               </button>
             </div>
           </div>
-        </div>
-      </>)}
-    </div>
-  );
-};
 
-const Thermometer = () => {
-  const [temperature, setTemperature] = useState<number>(0);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTemperature = parseInt(e.target.value);
-    if (!isNaN(newTemperature)) {
-      setTemperature(newTemperature);
-    }
-  };
-
-  return (
-    <div className="flex flex-col items-center justify-center p-10">
-      <div className="relative mb-5">
-        {/* Thermometer */}
-        <div className="relative w-8 h-64 bg-gray-200">
-          {/* Thermometer liquid */}
-          <div
-            style={{ height: `${temperature}%` }}
-            className="absolute bottom-0 left-0 right-0 bg-red-500"
-          ></div>
-          {/* Thermometer bulb */}
-          <div
-            style={{ bottom: `${temperature}%` }}
-            className="absolute left-0 right-0 w-8 h-8 bg-gray-100 border border-gray-400 rounded-full"
-          ></div>
-          {/* Thermometer scale */}
-          <div className="absolute bottom-0 w-full h-4 bg-gray-300">
-            <div
-              style={{ height: `${temperature}%` }}
-              className="h-full bg-gray-500"
-            ></div>
+          <div style={{ textAlign: 'center', marginTop: '10px' }}>
+            <p style={{ fontSize: '16px', marginBottom: "20px" }}>
+              Result: <span style={{ fontWeight: 'bold', color: evaluationResult === "Correct" || evaluationResult === "True" ? 'green' : 'red' }}>
+                {evaluationResult}
+              </span>
+            </p>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
 
-export const Evaluate: React.FC<any> = () => {
-  return (
-    <div className="relative">
-      <VideoComponent />
-      {/* <Thermometer /> */}
-    </div>
-  );
-}
+export default Evaluate;

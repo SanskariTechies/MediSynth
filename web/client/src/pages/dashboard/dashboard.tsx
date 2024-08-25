@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { DashboardMain } from './layers/main';
 import { DashboardSettings } from './layers/settings';
-import { DashboardMedScan } from './layers/medscan';
+import  DashboardMedScan  from './layers/medscan';
 import { NotFoundPage } from '../extras/NotFound';
 import { VideoCall } from './layers/videocall';
-import { Evaluate } from './layers/evaluate';
+import Evaluate from './layers/evaluate';
 
 const DashboardHeader: React.FC<any> = ({ component }) => {
   var [dropdown, setDropdown] = useState(false);

@@ -31,7 +31,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount the static files directory
+
 app.mount("/output", StaticFiles(directory="Wav2Lip/output"), name="output")
 
 @app.get("/")
