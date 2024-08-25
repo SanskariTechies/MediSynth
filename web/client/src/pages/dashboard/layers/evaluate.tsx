@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 
 const Evaluate = () => {
-  const [symptoms, setSymptoms] = useState('');
   const [fetchedDiseaseName, setFetchedDiseaseName] = useState('');
   const [enteredDiseaseName, setEnteredDiseaseName] = useState('');
   const [prescribedMedicine, setPrescribedMedicine] = useState('');
@@ -23,7 +22,7 @@ const Evaluate = () => {
         setMessageIndex(prevIndex => {
           if (prevIndex >= message.length) {
             clearInterval(interval);
-            setMessageCompleted(true); // Set to true when message is complete
+            setMessageCompleted(true); 
             return prevIndex;
           }
           return prevIndex + 1;

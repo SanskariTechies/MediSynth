@@ -1,104 +1,3 @@
-# # License: GNU General Public License v3.0
-
-# import requests
-# from fastapi import APIRouter, Request, UploadFile, File
-# from fastapi.responses import JSONResponse
-# import pandas as pd
-# from workers.chargen import CharGen
-# import random
-
-# router = APIRouter()
-
-# dataset = pd.read_csv("Data/symptoms.csv")
-
-# def get_random_symptoms():
-    
-#     random_row_index = random.randint(0, len(dataset) - 1)
-#     random_details = dataset.iloc[random_row_index].to_dict()
-#     disease_name = random_details['Disease']
-#     symptoms = []
-#     blood_pressure = ""
-#     cholesterol_level = ""
-#     for key, value in random_details.items():
-#         if key.lower() not in ['disease', 'gender', 'outcome variable', 'age']:
-#             if key.lower() == 'blood pressure':
-#                 blood_pressure = str(value).capitalize()
-#             elif key.lower() == 'cholesterol level':
-#                 cholesterol_level = str(value).capitalize()
-#             elif str(value).lower() != "no":  # For other symptoms, consider if not "No"
-#                 symptoms.append(key)
-#     if blood_pressure:
-#         symptoms.append(f"Blood Pressure is {blood_pressure}")
-#     if cholesterol_level:
-#         symptoms.append(f"Cholesterol Level is {cholesterol_level}")
-
-#     return disease_name,symptoms
-
-
-# def generate_random_name():
-#     random_names = ["Rakshita", "Emma", "Deepika", "Shradha", "Soniya", "Sowmya"]
-#     return random.choice(random_names)
-
-
-# @router.get("/pre-evaluation")
-# async def evaluation(request: Request):
-#     try:
-#         random_name = generate_random_name()
-#         disease_name, random_symptoms = get_random_symptoms()
-#         symptoms_str = ", ".join(random_symptoms)
-#         output_string = f"Hello, my name is {random_name} and my symptoms are {symptoms_str}."
-#         print(output_string)
-       
-#         return disease_name,output_string
-#     except Exception as e:
-#         return JSONResponse({ "success": False, "message": f"Error: {e}"})
-
-# import requests
-# from fastapi import APIRouter, Request
-# from fastapi.responses import JSONResponse
-# import pandas as pd
-# import random
-
-# router = APIRouter()
-
-# # Load the dataset
-# dataset = pd.read_csv("Data/processed.csv")
-
-# def get_random_symptoms():
-#     # Select a random row index
-#     random_row_index = random.randint(0, len(dataset) - 1)
-#     # Retrieve the row as a dictionary
-#     random_details = dataset.iloc[random_row_index].to_dict()
-    
-#     # Initialize an empty list to hold symptoms
-#     symptoms = []
-    
-#     # Iterate through the dictionary items
-#     for key, value in random_details.items():
-#         # Exclude the 'Disease' column and any columns with 'None' or 'No' values
-#         if key.lower() != 'disease' and value not in [None, 'No', 'no', '']:
-#             # Append the symptom value (not the column name)
-#             symptoms.append(str(value))
-    
-#     return symptoms
-
-# def generate_random_name():
-#     random_names = ["Rakshita", "Emma", "Deepika", "Shradha", "Soniya", "Sowmya"]
-#     return random.choice(random_names)
-
-# @router.get("/pre-evaluation")
-# async def evaluation(request: Request):
-#     try:
-#         random_name = generate_random_name()
-#         random_symptoms = get_random_symptoms()
-#         symptoms_str = ", ".join(random_symptoms)
-#         output_string = f"Hello, my name is {random_name} and my symptoms are {symptoms_str}."
-        
-#         return {"message": output_string}
-#     except Exception as e:
-#         return JSONResponse({"success": False, "message": f"Error: {e}"})
-
-
 import pandas as pd
 import random
 from fastapi import APIRouter, Request
@@ -109,7 +8,6 @@ import numpy as np
 
 router = APIRouter()
 
-# Load the dataset and the model
 dataset = pd.read_csv("Data/dataset.csv")
 model = load_model('models/my_disease_prediction_model.h5')
 label_encoder = LabelEncoder()
@@ -136,14 +34,10 @@ def get_random_symptoms():
     
     random_details = dataset.iloc[random_row_index].to_dict()
     
-    # Initialize an empty list to hold symptoms
     symptoms = []
     
-    # Iterate through the dictionary items
     for key, value in random_details.items():
-        # Exclude the 'Disease' column and any columns with NaN or empty values
         if key.lower() != 'disease' and pd.notna(value) and value.strip() not in ['No', 'nan', '']:
-            # Append the symptom value (not the column name)
             symptoms.append(str(value).strip())
     
     print(symptoms)
